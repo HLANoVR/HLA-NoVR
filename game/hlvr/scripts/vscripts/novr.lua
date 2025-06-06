@@ -2333,12 +2333,45 @@ if GlobalSys:CommandLineCheck("-novr") then
         SendToConsole("bind " .. CONSOLE .. " +toggleconsole")
     end, nil)
 
+    -- Temporary Solution
+    function RebindEverythingTo(keyBind)
+        SendToConsole("bind ".. PRIMARY_ATTACK   .." ".. keyBind)
+        SendToConsole("bind ".. SECONDARY_ATTACK .." ".. keyBind)
+        SendToConsole("bind ".. TERTIARY_ATTACK  .." ".. keyBind)
+        SendToConsole("bind ".. GRENADE          .." ".. keyBind)
+        SendToConsole("bind ".. RELOAD           .." ".. keyBind)
+        SendToConsole("bind ".. QUICK_SWAP       .." ".. keyBind)
+        SendToConsole("bind ".. MOVE_FORWARD     .." ".. keyBind)
+        SendToConsole("bind ".. MOVE_BACK        .." ".. keyBind)
+        SendToConsole("bind ".. MOVE_LEFT        .." ".. keyBind)
+        SendToConsole("bind ".. MOVE_RIGHT       .." ".. keyBind)
+        SendToConsole("bind ".. JUMP             .." ".. keyBind)
+        SendToConsole("bind ".. CONSOLE          .." ".. keyBind)
+        SendToConsole("bind ".. CROUCH           .." ".. keyBind)
+        SendToConsole("bind ".. SPRINT           .." ".. keyBind)
+        SendToConsole("bind ".. INTERACT         .." ".. keyBind)
+        SendToConsole("bind ".. FLASHLIGHT       .." ".. keyBind)
+        SendToConsole("bind ".. COVER_MOUTH      .." ".. keyBind)
+        SendToConsole("bind ".. QUICK_SAVE       .." ".. keyBind)
+        SendToConsole("bind ".. QUICK_LOAD       .." ".. keyBind)
+        SendToConsole("bind ".. MAIN_MENU        .." ".. keyBind)
+        SendToConsole("bind ".. PAUSE            .." ".. keyBind)
+        SendToConsole("bind ".. NOCLIP           .." ".. keyBind)
+        SendToConsole("bind ".. VIEWM_INSPECT    .." ".. keyBind)
+        SendToConsole("bind ".. ZOOM             .." ".. keyBind)
+        SendToConsole("bind ".. USE_HEALTHPEN    .." ".. keyBind)
+        SendToConsole("bind ".. DROP_ITEM        .." ".. keyBind)
+        SendToConsole("bind ".. UNEQUIP_WEARABLE .." ".. keyBind)
+    end
+
     function PlayerDied()
         SendToServerConsole("unpause")
         HUDHearts_StopUpdateLoop()
         WristPockets_StopUpdateLoop()
         SendToConsole("disable_flashlight")
+        RebindEverythingTo('"load quick"')
     end
+    --
 
     function GoToMainMenu(a, b)
         if Convars:GetBool("vr_enable_fake_vr") then
