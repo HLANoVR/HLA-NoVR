@@ -1,4 +1,5 @@
 if GlobalSys:CommandLineCheck("-novr") then
+    DoIncludeScript("novr_config.lua", nil)
     require "storage"
     unstuck_table = {}
     unstuck_count = 0
@@ -1208,7 +1209,11 @@ if GlobalSys:CommandLineCheck("-novr") then
             SendToConsole("sv_cheats 1")
             SendToConsole("addon_enable novr")
             SendToConsole("hidehud 96")
-            SendToConsole("mouse_disableinput 1")
+            if not DEFAULT_MENU then
+                SendToConsole("mouse_disableinput 1")
+            else
+                SendToConsole("bind " .. INTERACT .. " +use")
+            end
             SendToConsole("bind " .. PRIMARY_ATTACK .. " +use")
             SendToConsole("bind " .. CROUCH .. " \"\"")
             SendToConsole("bind PAUSE main_menu_exec")
@@ -1233,7 +1238,7 @@ if GlobalSys:CommandLineCheck("-novr") then
             ent = Entities:FindByName(nil, "startup_relay")
             ent:RedirectOutput("OnTrigger", "GoToMainMenu", ent)
 
-            if not GlobalSys:CommandLineCheck("-condebug") then
+            if not GlobalSys:CommandLineCheck("-condebug") and not STEAM_DECK then
                 local ent = SpawnEntityFromTableSynchronous("game_text", {["effect"]=2, ["spawnflags"]=1, ["color"]="230 230 230", ["color2"]="0 0 0", ["fadein"]=0, ["fadeout"]=0.15, ["fxtime"]=0.25, ["holdtime"]=20, ["x"]=-1, ["y"]=0.6})
                 DoEntFireByInstanceHandle(ent, "SetText", "The game needs to be started from the launcher!", 0, nil, nil)
                 DoEntFireByInstanceHandle(ent, "Display", "", 0, nil, nil)
@@ -1588,7 +1593,9 @@ if GlobalSys:CommandLineCheck("-novr") then
             if not loading_save_file then
                 ViewmodelAnimation_LevelChange()
             end
-            HUDHearts_StartupPreparations()
+            if not STEAM_DECK then
+                HUDHearts_StartupPreparations()
+            end
             ViewmodelAnimation_ADSZoom()
 
             local function PrecacheModels()
@@ -1603,7 +1610,9 @@ if GlobalSys:CommandLineCheck("-novr") then
 
             if is_on_map_or_later("a2_quarantine_entrance") and GetMapName() ~= "01_intro" and GetMapName() ~= "post-human_intro" then
                 ent = Entities:GetLocalPlayer()
-                HUDHearts_StartUpdateLoop()
+                if not STEAM_DECK then
+                    HUDHearts_StartUpdateLoop()
+                end
                 WristPockets_StartUpdateLoop()
             end
 
@@ -1709,7 +1718,9 @@ if GlobalSys:CommandLineCheck("-novr") then
 
                 -- Show hud hearts if player picked up the gravity gloves
                 if ent:Attribute_GetIntValue("gravity_gloves", 0) ~= 0 then
-                    HUDHearts_StartUpdateLoop()
+                    if not STEAM_DECK then
+                        HUDHearts_StartUpdateLoop()
+                    end
                     WristPockets_StartUpdateLoop()
                 end
 
@@ -2365,7 +2376,9 @@ if GlobalSys:CommandLineCheck("-novr") then
 
     function PlayerDied()
         SendToServerConsole("unpause")
-        HUDHearts_StopUpdateLoop()
+        if not STEAM_DECK then
+            HUDHearts_StopUpdateLoop()
+        end
         WristPockets_StopUpdateLoop()
         SendToConsole("disable_flashlight")
         RebindKeysTo('"load autosave"')
@@ -2374,15 +2387,25 @@ if GlobalSys:CommandLineCheck("-novr") then
     function GoToMainMenu(a, b)
         if Convars:GetBool("vr_enable_fake_vr") then
             SendToConsole("vr_enable_fake_vr 0;vr_enable_fake_vr 0")
-            SendToConsole("setpos_exact 757 -80 6")
+            if DEFAULT_MENU then
+                SendToConsole("setpos_exact 810 -80 6")
+            else    
+                SendToConsole("setpos_exact 757 -80 6")
+            end
         else
-            SendToConsole("setpos_exact 757 -80 -26")
+            if DEFAULT_MENU then
+                SendToConsole("setpos_exact 810 -80 -26")
+            else
+                SendToConsole("setpos_exact 757 -80 -26")
+            end
         end
         SendToConsole("setang_exact 0.4 0 0")
         SendToConsole("hidehud 96")
         print("[GameMenu] main_menu_mode")
         Entities:GetLocalPlayer():SetThink(function()
-            SendToConsole("gameui_preventescape;gameui_allowescapetoshow;gameui_activate")
+            if not DEFAULT_MENU then
+                SendToConsole("gameui_preventescape;gameui_allowescapetoshow;gameui_activate")
+            end
             SendToConsole("achievement_disable 0")
         end, "SetGameUIState", 0.1)
     end
@@ -2914,7 +2937,9 @@ if GlobalSys:CommandLineCheck("-novr") then
                 SendToConsole("hidehud 4")
             end
             -- Just to make sure the heart icons are gone, hidehud 4 seems fine
-            SendToConsole("hudhearts_stopupdateloop")
+            if not STEAM_DECK then
+                SendToConsole("hudhearts_stopupdateloop")
+            end
             SendToConsole("wristpockets_stopupdateloop")
         end, "GrabCandlers", 5)
     end

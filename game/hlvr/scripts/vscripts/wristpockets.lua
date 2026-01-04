@@ -1,5 +1,6 @@
 require "storage"
 require "bindings" -- Moved to bindings file: USE_HEALTHPEN, DROP_ITEM
+DoIncludeScript("novr_config.lua", nil)
 
 -- Fake Wrist Pockets, by Hypercycle
 
@@ -8,7 +9,9 @@ local itemsClasses = { "item_healthvial", "item_hlvr_grenade_frag", "item_hlvr_p
 
 --local itemsStrings = { "[z] He", "[x] Gr", "[c] Ba", "[c] It", "[c] Vi", "[c] Rv", "[c] Xe" } -- legacy
 local itemsStrings = { "$", "^", "*", "<", "'", "|", "~" } -- font wristpockets
---local itemsStrings = { "HP", "GR", "BA", "OB", "HV", "RH", "XG" } -- steam deck/linux
+if STEAM_DECK then
+    itemsStrings = { "HP", "GR", "BA", "OB", "HV", "RH", "XG" } -- steam deck/linux
+end
 --local itemsStrings = { "f", "l", "h", "j", "g", "i" } -- font alyxhl2
 -- font:
 -- $ - Health Pen
@@ -21,7 +24,9 @@ local itemsStrings = { "$", "^", "*", "<", "'", "|", "~" } -- font wristpockets
 
 --local itemsUniqueStrings = { "[c] Vo", "[c] Ca"  } -- legacy
 local itemsUniqueStrings = { "<", ">"  } -- font wristpockets
---local itemsUniqueStrings = { "BO", "KC"  } -- steam deck/linux
+if STEAM_DECK then  
+    itemsUniqueStrings = { "BO", "KC"  } -- steam deck/linux
+end
 --local itemsUniqueStrings = { "j", "k"  } -- font alyxhl2
 -- < - Bottle
 -- > - Keycard
