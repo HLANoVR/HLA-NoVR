@@ -27,6 +27,7 @@
 		//
 		SearchPaths
 		{
+			Game				novr_steamdeck
 			Game				novr_viewmodels
 			Game				novr
 			Game				hlvr
