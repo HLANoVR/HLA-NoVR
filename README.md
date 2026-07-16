@@ -21,7 +21,7 @@ https://discord.gg/AyfBeuZXsR
 
 - Development Support by Esdras Tarsis
 
-- Discord Server Management by ITz TarekInnit and syph0
+- Discord Server Management by Tarek and syph0
 
 - Scripts for Addons by Hypercycle
 
