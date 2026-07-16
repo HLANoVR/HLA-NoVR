@@ -1301,6 +1301,16 @@ if GlobalSys:CommandLineCheck("-novr") then
             SendToConsole("physcannon_tracelength 0")
             -- TODO: Lower this when picking up very low mass objects
             SendToConsole("player_throwforce 500")
+            
+            -- Fix lod and shadow popups
+            if GlobalSys:CommandLineCheck("-nocull") then
+                SendToConsole("sv_cheats 1")
+                SendToConsole("sc_force_lod_level_0")
+                SendToConsole("vr_expand_cull_frustum 360")
+                SendToConsole("sc_no_cull 1")
+                SendToConsole("vr_shadow_map_culling 0")
+            end
+            
             ent = Entities:FindByClassname(nil, "prop_door_rotating_physics")
             while ent do
                 -- Add locked door handle animation
