@@ -1,0 +1,166 @@
+General
+=======
+
+Added player_pos script to all maps for in-game position-based triggers
+Added some new bindings
+Added back in all removed tripmines
+Added raise/lower console commands for the scissor platforms
+Added climbable ladders (HL2-style) and removed all but one "USE" ladders
+Changed some default bindings
+Changed minimum FOV to 60 but force the main menu to 80
+Changed resin HUD counter to flash blue then yellow
+Changed flashlight to be automatic by default, as per the normal game (set a key to FLASHLIGHT in bindings.lua to make it manually controlled)
+Changed all tripmines to need to be disabled by the multitool
+Changed movement to support ladders and improved jumping
+
+ENTANGLEMENT (a1_intro_world)
+=============================
+
+Added usable radio tuner (press and hold USE to rotate it)
+Added usable monitor buttons in the Eli call area
+Added usable monitor dial
+Changed Eli call button to only function on the button and not on the microphone
+Changed the greenhouse door to open as if slightly heavier and added the ability to close it
+Changed the video camera release key from J to the normal USE button (default E)
+Changed both of the elevators' button commands from a debug command to a button press
+Removed the auto-teleport on the end vent so it can be manually opened and traversed using a crouch-jump
+
+ENTANGLEMENT (a1_intro_world_2)
+===============================
+
+Added crouch tutorial message to the crashed van's exit
+Added missing lightstand switch in Russell's hideout entrance
+Added missing monitor switch on Russell's hideout PC
+Changed the headset pickup from a debug command to the correct output command
+Changed the crashed van to require crouching to exit it
+Changed the parked car to have its door correctly open
+Changed Russell's window to be initially closed instead of partially open
+Changed the auto-teleport on Russell's window so it can be manually opened
+
+THE QUARANTINE ZONE (a2_quarantine_entrance)
+============================================
+
+No changes
+
+THE QUARANTINE ZONE (a2_pistol)
+===============================
+
+No changes (except ladder)
+
+THE QUARANTINE ZONE (a2_hideout)
+================================
+
+Changed the rollup door crank wheel to turn
+Changed the bell to pull and chime correctly
+
+IS OR WILL BE (a2_headcrabs_tunnel)
+===================================
+
+Changed flashlight pickup to support automatic flashlight functionality
+Changed flashlight messages depending on auto/manual
+
+IS OR WILL BE (a2_drainage)
+===========================
+
+Changed the rollup doors crank wheels to turn
+
+IS OR WILL BE (a2_train_yard)
+=============================
+
+Changed the traincar hatch to open using the multitool instead of using the hatch
+
+SUPERWEAPON (a3_station_street)
+===============================
+
+Changed the elevator buttons to work fully
+Changed the hotel window to auto-teleport/break/close
+
+THE NORTHERN STAR (a3_hotel_lobby_basement)
+===========================================
+
+Changed the elevator power puzzle to use all points correctly
+
+THE NORTHERN STAR (a3_hotel_underground_pit)
+============================================
+
+Changed the Combine elevator call button to only work on the button
+Changed the Combine elevator to use the handle instead of the door to open/close
+
+THE NORTHERN STAR (a3_hotel_interior_rooftop)
+=============================================
+
+Changed the "zombie party" window to open and crouch-jump teleport in instead of teleporting on USE
+Changed the circuit breaker to correctly pull and trigger the auto-flashlight (if used)
+
+THE NORTHERN STAR (a3_hotel_street)
+===================================
+
+Added missing tripmines
+Changed the tripmine disablement coding
+Changed the tripmine trap door to open both ways once initially opened
+
+ARMS RACE (a3_c17_processing_plant)
+===================================
+
+Changed the vent door's opening code
+Changed the scissor platform to raise/lower with mouse1/mouse2
+Changed the tripmine disablement coding
+Changed the Mine room back to original
+Changed the pallet levers so they move correctly (platform bug exists on raise/lower, needs lateral move to release)
+Changed the shack toner puzzle to correctly fire
+
+JEFF (a3_distillery)
+====================
+
+Added a notarget for Jeff.  He can still hear and move; to restrict that change setdeafstate and suppressmovement to 1
+Added two missing ladder climbs
+Changed the end ladder's usable distance to be nearer to the ladder
+Changed the cellar ladder to drop on first use, then climb thereafter
+Changed the cellar door crank wheel to require holding USE and to drop close when not
+Changed the first barricade door hook logic
+Changed the Jeff rollup door to require a few "USEs" to break the Xen crust
+Changed the two toner ports to close after use
+Changed and fixed the trash compactor's lever and button for multi use and correct lever movement
+Changed the antlion plug controls to be more fluid
+Changed the cover mouth tutorial to be earlier
+Changed the vodka counting so it plays the correct audio in the Zoo, but might not be necessary
+Removed most of the cellar changes as they are unnecessary
+
+CAPTIVITY (a4_c17_zoo)
+======================
+
+Changed the tunnel teleport slightly and added a return
+Changed the gate lever to be movable if unpowered
+Changed a toner port to close when used
+Removed some unnecessary changes
+
+REVELATIONS (a4_c17_tanker_yard)
+==================
+
+Changed the portaloo lever to require holding USE
+Changed the bridge crank to require holding USE
+Removed some unnecessary changes
+
+BREAKING AND ENTERING (a4_c17_water_tower)
+==========================================
+
+Changed the pipe crane to move right/left with mouse1/mouse2
+Changed the vertical pallet levers to work correctly
+
+BREAKING AND ENTERING (a4_c17_parking_garage)
+=============================================
+
+Changed the view orientation when starting the level
+Changed the falling cabinet door to need to be used to open
+Changed some toner path junctions to original orientation
+Changed the Combine gun release key from J to the normal USE button (default E)
+
+POINT EXTRACTION (a5_vault)
+===========================
+
+No changes (except ladder)
+
+POINT EXTRACTION (a5_ending)
+============================
+
+Changed the end interaction sequence to require using the two candlers instead of it being automatic

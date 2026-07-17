@@ -110,6 +110,8 @@ elseif map == "a3_hotel_lobby_basement" then
         toner_start_junction = "junction_1"
         toner_start_junction_input = 0
         toner_end_path = "toner_path_6"
+		SendToConsole("ent_fire power_stake_1_start disable")
+		SendToConsole("ent_fire power_stake_1_start enable")
 
         toner_paths = {
             toner_path_1 = {{0}, {"junction_1"}, Vector(919.6, -1457.38, 191.875), Vector(919.6, -1447.5, 191.875), Vector(920.6, -1447.5, 191.875), Vector(920.6, -1447.5, 187.099), Vector(920.6, -1429, 187.099)},
@@ -451,7 +453,7 @@ function PowerTonerPath(junction, junction_name, junction_input)
 
     local junction_rotation = junction_entity:Attribute_GetIntValue("junction_rotation", 0)
 
-    local junction_types = {
+    local junction_types = { -- (right, up, left, down)
         { -- Type 0: I Junction
             {{2}, { }, {0}, { }}, -- Rotation 0
             {{ }, {3}, { }, {1}}, -- Rotation 1
@@ -621,6 +623,11 @@ function ToggleTonerJunction()
 
             if toner_path_name == "toner_path_1" and map ~= "a3_hotel_street" or (toner_path_name == "freezer_toner_path_1") or (toner_path_name == "freezer_toner_path_7" and player:Attribute_GetIntValue("circuit_" .. map .. "_freezer_toner_junction_1_completed", 0) == 1) or toner_path_name == "5325_4704_train_gate_path_start" or toner_path_name == "shack_path_6" or toner_path_name == "shack_path_1" or toner_path_name == "path_health_trap_1" or toner_path_name == "589_path_1" or (toner_path_name == "589_path_4" and Entities:FindByName(nil, "589_path_2"):Attribute_GetIntValue("toner_path_powered", 0) == 1) or (toner_path_name == "589_path_7" and Entities:FindByName(nil, "589_path_6"):Attribute_GetIntValue("toner_path_powered", 0) == 1) or (toner_path_name == "589_path_a" and Entities:FindByName(nil, "589_path_9"):Attribute_GetIntValue("toner_path_powered", 0) == 1) or (toner_path_name == "589_path_11" and Entities:FindByName(nil, "589_path_12"):Attribute_GetIntValue("toner_path_powered", 0) == 1) or (map == "a4_c17_parking_garage" and (toner_path_name == "toner_path_3" and Entities:FindByName(nil, "toner_path_2"):Attribute_GetIntValue("toner_path_powered", 0) == 1 or toner_path_name == "toner_path_7" and Entities:FindByName(nil, "toner_path_5"):Attribute_GetIntValue("toner_path_powered", 0) == 1)) or toner_path_name == "1489_4074_path_demux_0" then
                 Entities:FindByName(nil, toner_path_name):Attribute_SetIntValue("toner_path_powered", 1)
+                if toner_path_name == "freezer_toner_path_7" and player:Attribute_GetIntValue("circuit_" .. map .. "_freezer_toner_junction_1_completed", 0) == 1 then
+                    SendToConsole("disable_flashlight")
+                    if Entities:FindByName(nil, "player_flashlight") then SendToConsole("ent_remove player_flashlight") end
+                    _G.flashlight_on = "0"
+                end
             end
 
             if map == "a3_hotel_lobby_basement" and toner_path_name == "toner_path_7" and player:Attribute_GetIntValue("circuit_" .. map .. "_junction_1_completed", 0) == 1 then
@@ -642,13 +649,22 @@ if class == "info_hlvr_toner_port" and (thisEntity:Attribute_GetIntValue("used",
 
     if name == "freezer_toner_outlet_1" then
         thisEntity:Attribute_SetIntValue("disabled", 0)
+        SendToConsole("ent_fire freezer_toner_outlet_1 disable")
     end
 
-    if thisEntity:Attribute_GetIntValue("redraw_toner", 0) == 0 then
-        if map == "a4_c17_parking_garage" then
-            if name == "toner_port" then
-                Entities:FindByName(nil, "falling_cabinet_door"):ApplyLocalAngularVelocityImpulse(Vector(0, 1200, 0))
-            end
+    if name == "freezer_toner_outlet_2" then
+        SendToConsole("ent_fire freezer_toner_outlet_2 disable")
+    end
+
+    if map == "a4_c17_zoo" then
+        if name == "589_toner_port_2" then
+            SendToConsole("ent_fire 589_toner_port_2 disable;ent_fire 589_toner_port_2 enable")
+        end
+    end
+
+    if map == "a4_c17_parking_garage" then
+        if name == "toner_port" then
+            SendToConsole("ent_fire toner_port disable")
         end
     end
 
@@ -685,6 +701,8 @@ if class == "info_hlvr_toner_port" and (thisEntity:Attribute_GetIntValue("used",
             if map == "a3_hotel_lobby_basement" and toner_path_name == "toner_path_7" and player:Attribute_GetIntValue("circuit_" .. map .. "_junction_1_completed", 0) == 1 then
                 Entities:FindByName(nil, toner_path_name):Attribute_SetIntValue("toner_path_powered", 1)
                 SendToConsole("ent_fire_output " .. toner_path_name .. " OnPowerOn")
+				SendToConsole("ent_fire power_stake_2_start disable")
+				SendToConsole("ent_fire power_stake_2_start enable")
             end
 
             if map == "a3_hotel_street" and toner_path_name == "toner_path_7" then

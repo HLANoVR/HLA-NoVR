@@ -244,6 +244,13 @@ function WristPockets_PickUpValuableItem(playerEnt, itemEnt)
             if itemModel == "models/props/distillery/bottle_vodka.vmdl" then
                 keepItemInstance = false
                 keepAcrossMaps = true
+				if playerEnt:LoadNumber("holding_vodka", 0) == 1 then
+					playerEnt:SaveNumber("holding_vodka_multi", 1)
+					playerEnt:SaveNumber("holding_vodka2_in_pocket", pocketSlotId)
+				elseif playerEnt:LoadNumber("holding_vodka", 0) == 0 then
+					playerEnt:SaveNumber("holding_vodka", 1)
+					playerEnt:SaveNumber("holding_vodka1_in_pocket", pocketSlotId)
+				end
             end
             -- set new instance for health station vials, reviver hearts and batteries
             if itemId == 5 or itemId == 3 or itemId == 6 then
@@ -454,11 +461,21 @@ Convars:RegisterCommand("wristpockets_dropitem", function()
                 end
                 -- Debug
                 -- local debug_objname = Storage:LoadString("pocketslots_slot" .. pocketSlotId .. "_objname")
-                -- local debug_objmodel = Storage:LoadString("pocketslots_slot" .. pocketSlotId .. "_objmodel")
+                local debug_objmodel = Storage:LoadString("pocketslots_slot" .. pocketSlotId .. "_objmodel")
                 -- print("Drop item name: " .. debug_objname )
                 -- print("Drop item model: " .. debug_objmodel )
                 -- local debug_entname = ent:GetName()
                 -- print("Drop ent name: " .. debug_entname )
+                
+                if debug_objmodel == "models/props/distillery/bottle_vodka.vmdl" then
+                    if player:LoadNumber("holding_vodka_multi", 0) == 1 then
+                        player:SaveNumber("holding_vodka_multi", 0)
+                        player:SaveNumber("holding_vodka2_in_pocket", 0)
+                    elseif player:LoadNumber("holding_vodka", 0) == 1 then
+                        player:SaveNumber("holding_vodka", 0)
+                        player:SaveNumber("holding_vodka1_in_pocket", 0)
+                    end
+                end
 
                 StartSoundEventFromPosition("Inventory.DepositItem", player:EyePosition())
 

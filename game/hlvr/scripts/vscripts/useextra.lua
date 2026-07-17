@@ -10,11 +10,7 @@ local player = Entities:GetLocalPlayer()
 player:Attribute_SetIntValue("useextra_executed", 1)
 
 if vlua.find(name, "elev_anim_door") and thisEntity:Attribute_GetIntValue("toggle", 0) == 0 and thisEntity:Attribute_GetIntValue("player_in_combine_elevator", 0) == 1 then
-    local ent = Entities:FindByName(nil, "2_203_inside_elevator_button")
-    if ent then
-        DoEntFireByInstanceHandle(ent, "RunScriptFile", "useextra", 0, nil, nil)
-    end
-    ent = Entities:FindByName(nil, "inside_elevator_button")
+    local ent = Entities:FindByName(nil, "inside_elevator_button")
     if ent then
         DoEntFireByInstanceHandle(ent, "RunScriptFile", "useextra", 0, nil, nil)
     end
@@ -56,7 +52,7 @@ if map == "a3_distillery" then
     end
 end
 
-if not vlua.find(model, "doorhandle") and name ~= "russell_entry_window" and name ~= "larry_ladder" and name ~= "@pod_shell" and name ~= "589_panel_switch" and name ~= "tc_door_control" and (class == "item_health_station_charger" or (class == "prop_animinteractable" and (not vlua.find(name, "elev_anim_door") or (vlua.find(name, "elev_anim_door") and thisEntity:Attribute_GetIntValue("toggle", 0) == 1 and thisEntity:GetVelocity() == Vector(0, 0, 0))) and not vlua.find(name, "5628_2901_barricade_door")) or (class == "item_hlvr_combine_console_rack" and IsCombineConsoleLocked() == false)) and not (map == "a4_c17_parking_garage" and name == "door_reset" and player:Attribute_GetIntValue("circuit_" .. map .. "_toner_junction_5_completed", 0) == 0) and thisEntity:Attribute_GetIntValue("used", 0) == 0 then
+if not vlua.find(model, "doorhandle") and name ~= "bridge_crank" and name ~= "toner_sliding_ladder" and name ~= "greenhouse_door" and name ~= "russell_entry_window" and name ~= "4910_135_interactive_wheel" and name ~= "bell" and name ~= "interactive_wheel2" and name ~= "interactive_wheel" and name ~= "larry_ladder" and name ~= "@pod_shell" and name ~= "589_panel_switch" and name ~= "tc_door_control" and name ~= "11578_2420_181_antlion_plug_crank_a" and name ~= "11578_2420_183_antlion_plug_crank_a" and name ~= "antlion_plug_crank_c" and name ~= "2_203_elev_anim_door" and name ~= "pallet_lever_unpowered" and name ~= "pallet_lever_vertical" and name ~= "pallet_lever" and name ~= "11478_6233_tutorial_wheel" and not (name == "intro_rollup_door" and map == "a3_distillery") and not (name == "plug_console_starter_lever" and map == "a3_distillery") and not (name == "plug_console_starter_lever" and map == "a4_c17_tanker_yard") and (class == "item_health_station_charger" or (class == "prop_animinteractable" and (not vlua.find(name, "elev_anim_door") or (vlua.find(name, "elev_anim_door") and thisEntity:Attribute_GetIntValue("toggle", 0) == 1 and thisEntity:GetVelocity() == Vector(0, 0, 0))) and not vlua.find(name, "5628_2901_barricade_door")) or (class == "item_hlvr_combine_console_rack" and IsCombineConsoleLocked() == false)) and not (map == "a4_c17_zoo" and name == "door_reset") and not (map == "a4_c17_water_tower" and model == "models/props_subway/scenes/desk_lever.vmdl") and not (map == "a4_c17_parking_garage" and name == "door_reset" and player:Attribute_GetIntValue("circuit_" .. map .. "_toner_junction_5_completed", 0) == 0) and thisEntity:Attribute_GetIntValue("used", 0) == 0 then
     if vlua.find(name, "slide_train_door") and Entities:FindByClassnameNearest("phys_constraint", thisEntity:GetCenter(), 20) then
         return
     end
@@ -65,11 +61,6 @@ if not vlua.find(model, "doorhandle") and name ~= "russell_entry_window" and nam
         return
     end
 
-    if name == "greenhouse_door" then
-        if string.format("%.2f", thisEntity:GetCycle()) ~= "0.05" then
-            return
-        end
-    end
 
     local count = 0
     if class == "prop_animinteractable" and model == "models/props_subway/scenes/desk_lever.vmdl" then
@@ -91,7 +82,7 @@ if not vlua.find(model, "doorhandle") and name ~= "russell_entry_window" and nam
                     return 0
                 end
             end, "Interacting", 0)
-            SendToConsole("ent_fire traincar_01_hackplug Alpha 0")
+            SendToConsole("ent_fire traincar_01_hackplug Alpha 255")
         elseif map == "a3_distillery" and name == "verticaldoor_wheel" then
             count = 0
             player:SetThink(function()
@@ -158,13 +149,6 @@ if not vlua.find(model, "doorhandle") and name ~= "russell_entry_window" and nam
         thisEntity:FireOutput("OnCompletionB", nil, nil, nil, 0)
     end
 
-    if name == "greenhouse_door" then
-        count = thisEntity:GetCycle()
-        StartSoundEvent("Sliding_Window.Down", player)
-        player:SetThink(function()
-            StopSoundEvent("Sliding_Window.Down", player)
-        end, "StopGreenhouseDoorSound", 1)
-    end
 
     if name == "barricade_door_hook" then
         count = thisEntity:GetCycle()
@@ -263,7 +247,7 @@ if not vlua.find(model, "doorhandle") and name ~= "russell_entry_window" and nam
 
             if name == "barricade_door" then
                 DoEntFireByInstanceHandle(Entities:FindByName(nil, "barricade_lock_relay"), "Trigger", "", 0, nil, nil)
-                SendToConsole("ent_fire player_speedmod ModifySpeed 1")
+                SendToConsole("ent_fire player_speedmod ModifySpeed 2")
             elseif name == "12712_shotgun_wheel" then
                 local bar = Entities:FindByName(nil, "12712_shotgun_bar_for_wheel")
                 bar:Kill()
@@ -293,7 +277,7 @@ if not vlua.find(model, "doorhandle") and name ~= "russell_entry_window" and nam
             return 0
         end
     end, "AnimateCompletionValue", 0)
-elseif (name == "barricade_door_hook" and player:Attribute_GetIntValue("locked_jeff_in_freezer", 0) == 0) or (name == "589_panel_switch" and Entities:FindByName(nil, "589_path_11"):Attribute_GetIntValue("toner_path_powered", 0) == 1) or name == "5628_2901_barricade_door_hook" or name == "tc_door_control" or (vlua.find(name, "elev_anim_door") and thisEntity:Attribute_GetIntValue("toggle", 0) == 0 and thisEntity:GetVelocity() == Vector(0, 0, 0)) then
+elseif name ~= "2_203_elev_anim_door" and name ~= "pallet_lever_unpowered" and name ~= "pallet_lever_vertical" and name ~= "pallet_lever" and name ~= "tc_door_control" and name ~= "11578_2635_380_button_center" and name ~= "plug_console_starter_lever" and name ~= "11578_2420_181_antlion_plug_crank_a" and name ~= "11578_2420_183_antlion_plug_crank_a" and name ~= "antlion_plug_crank_c" and ((name == "barricade_door_hook" and player:Attribute_GetIntValue("locked_jeff_in_freezer", 0) == 0) or (name == "589_panel_switch" and Entities:FindByName(nil, "589_path_11"):Attribute_GetIntValue("toner_path_powered", 0) == 1) or name == "5628_2901_barricade_door_hook" or (vlua.find(name, "elev_anim_door") and thisEntity:Attribute_GetIntValue("toggle", 0) == 0 and thisEntity:GetVelocity() == Vector(0, 0, 0))) then
     if thisEntity:Attribute_GetIntValue("used", 0) == 1 then
         if name == "barricade_door_hook" then
             thisEntity:StopThink("AnimateCompletionValue")
@@ -334,6 +318,148 @@ elseif (name == "barricade_door_hook" and player:Attribute_GetIntValue("locked_j
             return 0
         end
     end, "AnimateCompletionValue", 0)
+elseif (vlua.find(name, "radio_tuner")) then
+    completion_amount = _G.tuner_amount
+    player:SetThink(function()
+        if player:Attribute_GetIntValue("use_released", 0) == 1 then
+            if thisEntity:Attribute_GetIntValue("tuner_direction", 0) == 0 then
+                thisEntity:Attribute_SetIntValue("tuner_direction", 1)
+            else
+                thisEntity:Attribute_SetIntValue("tuner_direction", 0)
+            end
+        else
+            SendToConsole("ent_fire 205_4130_alyx_radio EnableReturnToCompletion")
+            if thisEntity:Attribute_GetIntValue("tuner_direction", 0) == 0 then
+                completion_amount = completion_amount + 0.001
+            else
+                completion_amount = completion_amount - 0.001
+            end
+            _G.tuner_amount = completion_amount
+            SendToConsole("ent_fire 205_4130_alyx_radio setreturntocompletionamount " .. completion_amount)
+            return 0
+        end
+    end, "Interacting", 0)
+elseif (vlua.find(name, "monitor_dial_2")) then
+    completion_amount = _G.dial_amount
+    player:SetThink(function()
+        if player:Attribute_GetIntValue("use_released", 0) == 1 then
+            if thisEntity:Attribute_GetIntValue("dial_direction", 0) == 0 then
+                thisEntity:Attribute_SetIntValue("dial_direction", 1)
+            else
+                thisEntity:Attribute_SetIntValue("dial_direction", 0)
+            end
+        else
+            SendToConsole("ent_fire monitor_dial EnableReturnToCompletion")
+            if thisEntity:Attribute_GetIntValue("dial_direction", 0) == 0 then
+                completion_amount = completion_amount + 0.002
+            else
+                completion_amount = completion_amount - 0.002
+            end
+            _G.dial_amount = completion_amount
+            SendToConsole("ent_fire monitor_dial setreturntocompletionamount " .. completion_amount)
+            return 0
+        end
+    end, "Interacting", 0)
+elseif (vlua.find(name, "4910_135_interactive_wheel")) then
+    completion_amount = 0
+    SendToConsole("ent_fire 4910_135_interactive_wheel EnableReturnToCompletion; ent_fire 4910_135_interactive_wheel setreturntocompletionstyle 0")
+    player:SetThink(function()
+        if player:Attribute_GetIntValue("use_released", 0) == 1 then
+            completion_amount = 0
+            SendToConsole("ent_fire 4910_135_interactive_wheel setreturntocompletionamount 0")
+        else
+            completion_amount = completion_amount + 1
+            SendToConsole("ent_fire 4910_135_interactive_wheel setreturntocompletionamount " .. completion_amount)
+            return 0.79
+        end
+    end, "Interacting", 0)
+elseif map == "a2_hideout" and name == "bell2" then
+    count = 0
+    completion_amount = -0.5
+    player:SetThink(function()
+        if player:Attribute_GetIntValue("use_released", 0) == 1 and count < 1 then
+            SendToConsole("ent_fire bell setreturntocompletionamount 0")
+        else
+            SendToConsole("ent_fire bell EnableReturnToCompletion")
+            completion_amount = completion_amount + 0.5
+            SendToConsole("ent_fire bell setreturntocompletionamount " .. completion_amount)
+            return 0
+        end
+    end, "Interacting", 0)
+elseif (vlua.find(name, "interactive_wheel2")) then
+    completion_amount = 0
+    SendToConsole("ent_fire interactive_wheel2 EnableReturnToCompletion; ent_fire interactive_wheel2 setreturntocompletionstyle 0")
+    player:SetThink(function()
+        if player:Attribute_GetIntValue("use_released", 0) == 1 then
+            completion_amount = 0
+            SendToConsole("ent_fire interactive_wheel2 setreturntocompletionamount 0")
+        else
+            completion_amount = completion_amount + 1
+            SendToConsole("ent_fire interactive_wheel2 setreturntocompletionamount " .. completion_amount)
+            return 0.79 -- fastest return for this wheel
+        end
+    end, "Interacting", 0)
+elseif (vlua.find(name, "interactive_wheel")) then
+    completion_amount = 0
+    SendToConsole("ent_fire interactive_wheel EnableReturnToCompletion; ent_fire interactive_wheel setreturntocompletionstyle 0")
+    player:SetThink(function()
+        if player:Attribute_GetIntValue("use_released", 0) == 1 then
+            completion_amount = 0
+            SendToConsole("ent_fire interactive_wheel setreturntocompletionamount 0")
+        else
+            completion_amount = completion_amount + 1
+            SendToConsole("ent_fire interactive_wheel setreturntocompletionamount " .. completion_amount)
+            return 1.007 -- fastest return for this wheel
+        end
+    end, "Interacting", 0)
+elseif name == "2_203_elev_outer_handle" or name == "2_203_elev_inner_handle" then
+    local ent = Entities:FindByName(nil, "2_203_elev_anim_door")
+    local count = 0
+    if ent:Attribute_GetIntValue("open", 0) == 1 then
+        DoEntFireByInstanceHandle(ent, "setreturntocompletionamount", "0", 0, nil, nil)
+        DoEntFireByInstanceHandle(ent, "setreturntocompletionstyle", "0", 0, nil, nil)
+        DoEntFireByInstanceHandle(ent, "enablereturntocompletion", "", 0, nil, nil)
+        ent:Attribute_SetIntValue("open", 0)
+    else
+        ent:SetThink(function()
+            DoEntFireByInstanceHandle(ent, "SetCompletionValue", "" .. count, 0, nil, nil)
+            count = count + 0.01
+            DoEntFireByInstanceHandle(ent, "DisableReturnToCompletion", "", 0, nil, nil)
+            if math.floor((count * 100 % 10)) == 5 then
+                SendToConsole("snd_sos_start_soundevent AnimDoor_Elevator_Combine.Tick") -- or .Grab
+            end
+            if count < 1 then
+                return 0
+            end
+            ent:Attribute_SetIntValue("open", 1)
+        end, "AnimateCompletionValue", 0)
+        ent:FireOutput("OnCompletionA_Forward", nil, nil, nil, 0)
+    end
+elseif map == "a4_c17_tanker_yard" and name == "bridge_crank" then
+    thisEntity:FireOutput("OnInteractStart", nil, nil, nil, 0)
+    completion_amount = 0
+    player:SetThink(function()
+        if player:Attribute_GetIntValue("use_released", 0) == 1 then
+            thisEntity:FireOutput("OnInteractStop", nil, nil, nil, 0)
+        else
+            SendToConsole("ent_fire bridge_crank EnableReturnToCompletion")
+            SendToConsole("ent_fire bridge_crank setreturntocompletionamount " .. completion_amount)
+            completion_amount = completion_amount + 0.02
+            return 0
+        end
+    end, "Interacting", 0)
+elseif map == "a4_c17_tanker_yard" and name == "plug_console_starter_lever" then
+    completion_amount = 0
+    player:SetThink(function()
+        if player:Attribute_GetIntValue("use_released", 0) == 1 then
+            SendToConsole("ent_fire plug_console_starter_lever setreturntocompletionamount 0")
+        else
+            SendToConsole("ent_fire plug_console_starter_lever EnableReturnToCompletion")
+            SendToConsole("ent_fire plug_console_starter_lever setreturntocompletionamount " .. completion_amount)
+            completion_amount = completion_amount + 0.005
+            return 0
+        end
+    end, "Interacting", 0)
 end
 
 if vlua.find(model, "doorhandle") then
@@ -506,8 +632,28 @@ end
 
 ---------- a1_intro_world ----------
 
-if name == "microphone" or name == "call_button_prop" or model == "maps/a1_intro_world/entities/unnamed_205_2961_1020.vmdl" then
-    SendToConsole("ent_fire call_button_relay trigger")
+if name == "call_button_prop_2" then
+    SendToConsole("ent_fire_output call_button onin")
+end
+
+if name == "button_monitor_upper_left_2" then
+    SendToConsole("ent_fire branch_screen_up_left toggletest")
+    SendToConsole("ent_fire snd_button_a StartSound")
+end
+
+if name == "button_monitor_upper_right_2" then
+    SendToConsole("ent_fire branch_screen_up_right toggletest")
+    SendToConsole("ent_fire snd_button_c StartSound")
+end
+
+if name == "button_monitor_lower_left_2" then
+    SendToConsole("ent_fire branch_screen_left_lower toggletest")
+    SendToConsole("ent_fire snd_button_b StartSound")
+end
+
+if name == "button_monitor_lower_right_2" then
+    SendToConsole("ent_fire branch_screen_lower_right toggletest")
+    SendToConsole("ent_fire snd_button_d StartSound")
 end
 
 if name == "greenhouse_door_lock" then
@@ -515,12 +661,20 @@ if name == "greenhouse_door_lock" then
     DoEntFireByInstanceHandle(ent, "RunScriptFile", "useextra", 0, nil, nil)
 end
 
+if (vlua.find(name, "greenhouse_door")) then
+    if player:Attribute_GetIntValue("greenhouse_door_open", 0) == 1 then
+        SendToConsole("ent_fire greenhouse_door enablereturntocompletion; ent_fire greenhouse_door setreturntocompletionstyle 1; ent_fire greenhouse_door setreturntocompletionamount 0")
+        player:Attribute_SetIntValue("greenhouse_door_open", 0)
+    else
+        SendToConsole("ent_fire greenhouse_door enablereturntocompletion; ent_fire greenhouse_door setreturntocompletionstyle 1; ent_fire greenhouse_door setreturntocompletionamount 1")
+        player:Attribute_SetIntValue("greenhouse_door_open", 1)
+        return 0
+    end
+end
+
 if name == "205_2724_hingecam" then
-    SendToConsole("bind J novr_leavehingecam")
+    SendToConsole("bind " .. INTERACT .. " novr_leavehingecam")
     if thisEntity:Attribute_GetIntValue("used", 0) == 0 then
-        local ent = SpawnEntityFromTableSynchronous("game_text", {["effect"]=2, ["spawnflags"]=1, ["color"]="230 230 230", ["color2"]="0 0 0", ["fadein"]=0, ["fadeout"]=0.15, ["fxtime"]=0.25, ["holdtime"]=5, ["x"]=-1, ["y"]=0.6})
-        DoEntFireByInstanceHandle(ent, "SetText", "Press [J] to get out", 0, nil, nil)
-        DoEntFireByInstanceHandle(ent, "Display", "", 0, nil, nil)
 
         ent = Entities:FindByName(nil, "205_2724_hingecam") -- parent hingecam entity
         ent:Attribute_SetIntValue("ready", 1)
@@ -531,20 +685,24 @@ if name == "205_2724_hingecam" then
     thisEntity:Attribute_SetIntValue("used", 1)
 end
 
-if name == "205_2653_door" or name == "205_2653_door2" or name == "205_8018_button_pusher_prop" then
-    if player:Attribute_GetIntValue("CalledIntroRoofElevator", 0) == 0 then
-        SendToConsole("ent_fire debug_roof_elevator_call_relay trigger")
-        SendToConsole("snd_sos_start_soundevent Button_Basic.Press")
-        player:Attribute_SetIntValue("CalledIntroRoofElevator", 1)
-    end
+if name == "205_8018_button_pusher_prop" then
+    SendToConsole("ent_fire 205_8018_button_branch test")
+end
+
+if name == "205_2653_72_button_pusher_prop" then
+    SendToConsole("ent_fire_output 205_2653_72_button_center_pusher OnIn")
+end
+
+if name == "205_2653_74_button_pusher_prop" then
+    SendToConsole("ent_fire_output 205_2653_74_button_center_pusher OnIn")
+end
+
+if name == "205_2653_75_button_pusher_prop" then
+    SendToConsole("ent_fire_output 205_2653_75_button_center_pusher OnIn")
 end
 
 if name == "205_8032_button_pusher_prop" then
-    if player:Attribute_GetIntValue("UsedIntroRoofElevator", 0) == 0 then
-        SendToConsole("ent_fire_output 205_8032_button_center_pusher OnIn")
-        SendToConsole("snd_sos_start_soundevent Button_Basic.Press")
-        player:Attribute_SetIntValue("UsedIntroRoofElevator", 1)
-    end
+    SendToConsole("ent_fire_output 205_8032_button_center_pusher OnIn")
 end
 
 if model == "models/props/eli_manor/antique_globe01a.vmdl" then
@@ -620,11 +778,15 @@ if name == "washing_machine_button_4" then
     SendToConsole("ent_fire_output 273_3642_washing_machine_button_handpose onhandposed")
 end
 
+if name == "563_vent_door_usable" then
+    SendToConsole("ent_fire 563_vent_phys_hinge setoffset 0.39;ent_fire 563_vent_door_usable disable;ent_fire 563_vent_door_usable disablecollision")
+end
+
 
 ---------- a1_intro_world_2 ----------
 
-if name == "russell_headset" or name == "brush_block_window" then
-    SendToConsole("ent_fire debug_relay_put_on_headphones Trigger")
+if name == "russell_headset" then
+    SendToConsole("ent_fire_output russell_headset onputonheadset")
     SendToConsole("ent_fire 4962_car_door_left_front Close")
 end
 
@@ -645,9 +807,7 @@ if vlua.find(name, "mailbox") and vlua.find(model, "door") then
 end
 
 if name == "russell_entry_window" and thisEntity:Attribute_GetIntValue("used", 0) == 0 then
-    SendToConsole("fadein 0.2")
-    SendToConsole("setpos -1728 275 100")
-    SendToConsole("ent_fire russell_entry_window SetCompletionValue 1")
+    SendToConsole("ent_fire russell_entry_window setreturntocompletionamount 1;ent_fire russell_entry_window setreturntocompletionstyle 2;ent_fire russell_entry_window enablereturntocompletion")
     thisEntity:Attribute_SetIntValue("used", 1)
 end
 
@@ -690,6 +850,26 @@ if name == "glove_dispenser_brush" and thisEntity:Attribute_GetIntValue("used", 
     Entities:GetLocalPlayer():Attribute_SetIntValue("gravity_gloves", 1)
 end
 
+if name == "monitor_switch" then
+    if thisEntity:Attribute_GetIntValue("switch_on", 0) == 0 then
+        SendToConsole("ent_fire_output 621_6822_switch_on_handpose onhandposed")
+        thisEntity:Attribute_SetIntValue("switch_on", 1)
+    else
+        SendToConsole("ent_fire_output 621_6822_switch_off_handpose onhandposed")
+        thisEntity:Attribute_SetIntValue("switch_on", 0)
+    end
+end
+
+if name == "lightstand_switch" then
+    if thisEntity:Attribute_GetIntValue("switch_on", 0) == 0 then
+        SendToConsole("ent_fire_output 621_6492_switch_off_handpose onhandposed")
+        thisEntity:Attribute_SetIntValue("switch_on", 1)
+    else
+        SendToConsole("ent_fire_output 621_6492_switch_on_handpose onhandposed")
+        thisEntity:Attribute_SetIntValue("switch_on", 0)
+    end
+end
+
 
 ---------- a2_quarantine_entrance ----------
 
@@ -718,9 +898,11 @@ if map == "a2_headcrabs_tunnel" then
         SendToConsole("ent_remove flashlight")
         SendToConsole("ent_remove fake_flashlight_for_room")
 
-        local ent = SpawnEntityFromTableSynchronous("env_message", {["message"]="FLASHLIGHT"})
-        DoEntFireByInstanceHandle(ent, "ShowMessage", "", 0, nil, nil)
-        SendToConsole("snd_sos_start_soundevent Instructor.StartLesson")
+        if not FLASHLIGHT == "" then
+            local ent = SpawnEntityFromTableSynchronous("env_message", {["message"]="FLASHLIGHT"})
+            DoEntFireByInstanceHandle(ent, "ShowMessage", "", 0, nil, nil)
+            SendToConsole("snd_sos_start_soundevent Instructor.StartLesson")
+        end
 
         SendToConsole("inv_flashlight")
     end
@@ -733,6 +915,25 @@ if map == "a2_train_yard" then
     if IsCombineConsoleLocked() == false then
         local ent = Entities:FindByName(nil, "5325_3947_combine_console")
         DoEntFireByInstanceHandle(ent, "RackOpening", "1", 0, thisEntity, thisEntity)
+    end
+end
+
+
+---------- a3_station_street ----------
+
+if map == "a3_station_street" then
+    if name == "elev_floor_1_call_button" then
+        SendToConsole("ent_fire_output 2_8127_elev_button_floor_1_call OnIn")
+        SendToConsole("snd_sos_start_soundevent Button_Basic.Press")
+    elseif name == "elev_floor_2_call_button" then
+        SendToConsole("ent_fire_output 2_8127_elev_button_floor_2_call OnPressed")
+        SendToConsole("snd_sos_start_soundevent Button_Basic.Press")
+    elseif name == "elev_floor_1_button" then
+        SendToConsole("ent_fire_output 2_8127_elev_button_floor_1 OnPressed")
+        SendToConsole("snd_sos_start_soundevent Button_Basic.Press")
+    elseif name == "elev_floor_2_button" then
+        SendToConsole("ent_fire_output 2_8127_elev_button_floor_2 OnPressed")
+        SendToConsole("snd_sos_start_soundevent Button_Basic.Press")
     end
 end
 
@@ -811,14 +1012,37 @@ if map == "a3_hotel_lobby_basement" then
 end
 
 
+---------- a3_hotel_interior_rooftop ----------
+
+if map == "a3_hotel_interior_rooftop" then
+    if name == "window_sliding1" then
+        SendToConsole("ent_fire zombieparty_window_slideconstraint setoffset 1")
+    end
+end
+
+
+---------- a3_hotel_street ----------
+
+if map == "a3_hotel_street" then
+    if name == "167_18697_tripmine_trap_door_1" then
+        count = 0
+        player:SetThink(function()
+            if count > 1 then
+                ent = Entities:FindByName(nil, "167_18697_tripmine_trap_door_1")
+                DoEntFireByInstanceHandle(ent, "SetOpenDirection", "" .. 0, 0, nil, nil) 
+            else
+                count = count + 0.5
+                return 0.5
+            end
+        end, "Interacting", 0)
+    end
+end
+
+
 ---------- a3_c17_processing_plant ----------
 
 if name == "vent_door" then
-    if thisEntity:Attribute_GetIntValue("toggle", 0) == 0 then
-        thisEntity:ApplyLocalAngularVelocityImpulse(Vector(0,0,-1000))
-    else
-        thisEntity:ApplyLocalAngularVelocityImpulse(Vector(0,0,1000))
-    end
+    SendToConsole("ent_fire vent_phys_hinge setmotortargetangle 1")
 end
 
 
@@ -829,24 +1053,70 @@ if map == "a3_distillery" then
         SendToConsole("ent_fire_output larry_ladder OnCompletionA")
         SendToConsole("ent_fire_output larry_ladder OnCompletionC")
         player:Attribute_SetIntValue("pulled_larry_ladder", 1)
+        player:SetVelocity(Vector(player:GetForwardVector().x - (player:GetForwardVector().x * 2), player:GetForwardVector().y - (player:GetForwardVector().y * 2), 0):Normalized() * 150)
     end
 
     if name == "cellar_ladder" then
-        ClimbLadder(560)
-        SendToConsole("ent_fire cellar_ladder SetCompletionValue 1")
+        if player:Attribute_GetIntValue("cellar_ladder_down", 0) == 0 then
+            SendToConsole("ent_fire cellar_ladder Enable")
+            player:Attribute_SetIntValue("cellar_ladder_down", 1)
+            player:SetVelocity(Vector(player:GetForwardVector().x - (player:GetForwardVector().x * 2), player:GetForwardVector().y - (player:GetForwardVector().y * 2), 0):Normalized() * 150)
+        end
     end
 
     if name == "11578_2635_380_button_center" then
         SendToConsole("ent_fire_output 11578_2635_380_button_center_pusher OnIn")
+        count = 0
+        player:SetThink(function()
+            if count <= 23 then
+                SendToConsole("ent_fire tc_door_control enablereturntocompletion;ent_fire tc_door_control setreturntocompletionamount 1")
+                count = count + 0.1
+                return 0.1
+            end
+            player:Attribute_SetIntValue("tc_door_closed", 0)
+        end, "Interacting", 0)
+    end
+
+    if name == "5628_2901_barricade_door_hook" then
+        local count = 0 + thisEntity:GetCycle()
+        thisEntity:SetThink(function()
+            DoEntFireByInstanceHandle(thisEntity, "SetCompletionValue", "" .. 0 + count, 0, nil, nil)
+            count = count - 0.01
+            if count >= 0.99 then
+                thisEntity:FireOutput("OnCompletionA_Backward", nil, nil, nil, 0)
+                return 0
+            elseif count <= 0 then
+                return nil
+            else
+                return 0
+            end
+        end, "AnimateCompletionValue", 0)
     end
 
     if name == "intro_rollup_door" then
-        SendToConsole("ent_fire_output intro_rollup_door OnCompletionA_Forward")
-        SendToConsole("ent_fire door_xen_crust Break")
-        SendToConsole("ent_fire relay_door_xen_crust_c Trigger")
-        SendToConsole("ent_fire relay_door_xen_crust_d Trigger")
-        SendToConsole("ent_fire relay_door_xen_crust_e Trigger")
-        SendToConsole("ent_fire @snd_music_bz_hello Kill")
+        SendToConsole("ent_fire intro_rollup_door enablereturntocompletion")
+        if player:Attribute_GetIntValue("door_xen_crust_broken", 0) == 0 then
+            SendToConsole("ent_fire door_xen_crust break")
+            SendToConsole("ent_fire door_xen_crust_cover break")
+            SendToConsole("ent_fire door_xen_crustpcrust_0 break")
+            SendToConsole("ent_fire door_xen_crustpcrust_1 break")
+            SendToConsole("ent_fire intro_rollup_door setreturntocompletionamount 0.005")
+            player:Attribute_SetIntValue("door_xen_crust_broken", 1)
+        elseif player:Attribute_GetIntValue("door_xen_crust_broken", 0) == 1 then
+            SendToConsole("ent_fire door_xen_crustpcrust_2 break")
+            SendToConsole("ent_fire door_xen_crustpcrust_3 break")
+            SendToConsole("ent_fire door_xen_crustpcrust_4 break")
+            SendToConsole("ent_fire door_xen_crustpcrust_5 break")
+            SendToConsole("ent_fire intro_rollup_door setreturntocompletionamount 0.01")
+            player:Attribute_SetIntValue("door_xen_crust_broken", 2)
+        elseif player:Attribute_GetIntValue("door_xen_crust_broken", 0) == 2 then
+            SendToConsole("ent_fire door_xen_crustpcrust_6 break")
+            SendToConsole("ent_fire door_xen_crustpcrust_7 break")
+            SendToConsole("ent_fire door_xen_crustpcrust_8 break")
+            SendToConsole("ent_fire door_xen_crustpcrust_9 break")
+            SendToConsole("ent_fire intro_rollup_door setreturntocompletionamount 1")
+            player:Attribute_SetIntValue("door_xen_crust_broken", 3)
+        end
     end
 
     if name == "barricade_door_hook" and player:Attribute_GetIntValue("locked_jeff_in_freezer", 0) == 1 then
@@ -854,61 +1124,215 @@ if map == "a3_distillery" then
     end
 
     if name == "tc_door_control" then
-        SendToConsole("ent_fire relay_close_compactor_doors Trigger")
+        count = 0
+        if player:Attribute_GetIntValue("tc_door_closed", 0) == 0 then
+            player:SetThink(function()
+                if count <= 1 then
+                    SendToConsole("ent_fire tc_door_control enablereturntocompletion;ent_fire tc_door_control setreturntocompletionamount 0")
+                    count = count + 0.1
+                    return 0.1
+                end
+                player:Attribute_SetIntValue("tc_door_closed", 1)
+            end, "Interacting", 0)
+        else
+            player:SetThink(function()
+                if count <= 1 then
+                    SendToConsole("ent_fire tc_door_control enablereturntocompletion;ent_fire tc_door_control setreturntocompletionamount 1")
+                    count = count + 0.1
+                    return 0.1
+                end
+                player:Attribute_SetIntValue("tc_door_closed", 0)
+            end, "Interacting", 0)
+        end
     end
 
-    if name == "11478_6233_tutorial_wheel" then
-        SendToConsole("ent_fire 11478_6233_verticaldoor_wheel_tutorial open")
+    if name == "11478_6233_tutorial_wheel" then -- needs further work
+        completion_amount = 0
+        SendToConsole("ent_fire 11478_6233_tutorial_wheel EnableReturnToCompletion; ent_fire 11478_6233_tutorial_wheel setreturntocompletionstyle 1")
+        player:SetThink(function()
+            if player:Attribute_GetIntValue("use_released", 0) == 1 then
+                completion_amount = 0
+                SendToConsole("ent_fire 11478_6233_tutorial_wheel setreturntocompletionamount 0")
+            else
+                completion_amount = completion_amount + 0.05
+                SendToConsole("ent_fire 11478_6233_tutorial_wheel setreturntocompletionamount " .. completion_amount)
+                return 0.3
+            end
+        end, "Interacting", 0)
     end
 
     if name == "11479_2385_button_pusher_prop" then
         SendToConsole("ent_fire_output 11479_2385_button_center_pusher onin")
+        _G.distillery_elev_called = 1
     end
 
     if name == "11479_2386_button_pusher_prop" then
         SendToConsole("ent_fire_output 11479_2386_button_center_pusher onin")
     end
 
+    if name == "plug_console_starter_lever" then
+        SendToConsole("ent_fire plug_console_starter_lever enablereturntocompletion")
+        local count = 0 + thisEntity:GetCycle()
+        thisEntity:SetThink(function()
+            DoEntFireByInstanceHandle(thisEntity, "SetCompletionValue", "" .. 0 + count, 0, nil, nil)
+            count = count + 0.01
+            if count >= 1 then
+                thisEntity:FireOutput("OnCompletionB_Forward", nil, nil, nil, 0)
+                return nil
+            else
+                return 0
+            end
+        end, "AnimateCompletionValue", 0)
+    end
+
     if name == "11578_2420_181_antlion_plug_crank_a" then
-        SendToConsole("ent_fire_output 11578_2420_181_antlion_plug_crank_a oncompletionc_forward")
+        SendToConsole("ent_fire 11578_2420_181_antlion_plug_crank_a enablereturntocompletion")
+        local count = 0 + thisEntity:GetCycle()
+        thisEntity:SetThink(function()
+            DoEntFireByInstanceHandle(thisEntity, "SetCompletionValue", "" .. 0 + count, 0, nil, nil)
+            count = count + 0.01
+            if count >= 1 then
+                thisEntity:FireOutput("OnCompletionC_Forward", nil, nil, nil, 0)
+                return nil
+            else
+                return 0
+            end
+        end, "AnimateCompletionValue", 0)
     end
 
     if name == "11578_2420_183_antlion_plug_crank_a" then
-        SendToConsole("ent_fire_output 11578_2420_183_antlion_plug_crank_a oncompletionc_forward")
+        SendToConsole("ent_fire 11578_2420_183_antlion_plug_crank_a enablereturntocompletion")
+        local count = 0 + thisEntity:GetCycle()
+        thisEntity:SetThink(function()
+            DoEntFireByInstanceHandle(thisEntity, "SetCompletionValue", "" .. 0 + count, 0, nil, nil)
+            count = count + 0.01
+            if count >= 1 then
+                thisEntity:FireOutput("OnCompletionC_Forward", nil, nil, nil, 0)
+                return nil
+            else
+                return 0
+            end
+        end, "AnimateCompletionValue", 0)
     end
 
     if name == "antlion_plug_crank_c" then
-        SendToConsole("ent_fire_output antlion_plug_crank_c oncompletionc_forward")
+        SendToConsole("ent_fire antlion_plug_crank_c enablereturntocompletion")
+        local count = 0 + thisEntity:GetCycle()
+        thisEntity:SetThink(function()
+            DoEntFireByInstanceHandle(thisEntity, "SetCompletionValue", "" .. 0 + count, 0, nil, nil)
+            count = count + 0.01
+            if count >= 1 then
+                thisEntity:FireOutput("OnCompletionC_Forward", nil, nil, nil, 0)
+                return nil
+            else
+                return 0
+            end
+        end, "AnimateCompletionValue", 0)
     end
 end
 
 
 ---------- a4_c17_zoo ----------
 
-if map == "a4_c17_zoo" and model == "models/props/industrial_door_1_40_92_white_temp.vmdl" and thisEntity:GetOrigin() == Vector(7218, 2044, -128) then
-    player:Attribute_SetIntValue("circuit_" .. map .. "_junction_health_trap_2_completed", 1)
+if map == "a4_c17_zoo" then
+    if model == "models/props/industrial_door_1_40_92_white_temp.vmdl" and thisEntity:GetOrigin() == Vector(7218, 2044, -128) then
+        player:Attribute_SetIntValue("circuit_" .. map .. "_junction_health_trap_2_completed", 1)
+    end
+    
+    if name == "door_reset" then
+        SendToConsole("ent_fire door_reset enablereturntocompletion")
+        local count = 0 + thisEntity:GetCycle()
+        thisEntity:SetThink(function()
+            DoEntFireByInstanceHandle(thisEntity, "SetCompletionValue", "" .. 0 + count, 0, nil, nil)
+            count = count + 0.01
+            if count >= 1 then
+                thisEntity:FireOutput("OnCompletionA_Forward", nil, nil, nil, 0)
+                return nil
+            else
+                return 0
+            end
+        end, "AnimateCompletionValue", 0)
+    end
+end
+
+
+---------- a4_c17_water_tower ----------
+
+if map == "a4_c17_water_tower" then
+    if class == "prop_animinteractable" and model == "models/props_subway/scenes/desk_lever.vmdl" then
+        if thisEntity:GetName() == "" then
+            if player:Attribute_GetIntValue("lever_number", 0) == 0 then
+                thisEntity:SetEntityName("Lever1")
+                player:Attribute_SetIntValue("lever_number", 1)
+            elseif player:Attribute_GetIntValue("lever_number", 0) == 1 then
+                thisEntity:SetEntityName("Lever2")
+            end
+        end
+        if player:Attribute_GetIntValue("water_tower_lever_forward", 0) == 0 then
+            player:SetThink(function()
+                if player:Attribute_GetIntValue("use_released", 0) == 1 then
+                    SendToConsole("ent_fire " .. thisEntity:GetName() .. " setreturntocompletionamount 0.5; ent_fire " .. thisEntity:GetName() .. " enablereturntocompletion")
+                else
+                    SendToConsole("ent_fire " .. thisEntity:GetName() .. " setreturntocompletionamount 0; ent_fire " .. thisEntity:GetName() .. " enablereturntocompletion")
+                    player:Attribute_SetIntValue("water_tower_lever_forward", 1)
+                    return 0
+                end
+            end, "Interacting", 0)
+        else
+            player:SetThink(function()
+                if player:Attribute_GetIntValue("use_released", 0) == 1 then
+                    SendToConsole("ent_fire " .. thisEntity:GetName() .. " setreturntocompletionamount 0.5; ent_fire " .. thisEntity:GetName() .. " enablereturntocompletion")
+                else
+                    SendToConsole("ent_fire " .. thisEntity:GetName() .. " setreturntocompletionamount 1; ent_fire " .. thisEntity:GetName() .. " enablereturntocompletion")
+                    player:Attribute_SetIntValue("water_tower_lever_forward", 0)
+                    return 0
+                end
+            end, "Interacting", 0)
+        end
+    end
 end
 
 
 ---------- a4_c17_parking_garage ----------
 
-if name == "toner_sliding_ladder" then
-    ClimbLadder(160)
+if map == "a4_c17_parking_garage" then
+    if name == "toner_sliding_ladder" then
+        SendToConsole("ent_fire toner_sliding_ladder enable")
+        player:Attribute_SetIntValue("toner_ladder_down", 1)
+        player:SetVelocity(Vector(player:GetForwardVector().x - (player:GetForwardVector().x * 2), player:GetForwardVector().y - (player:GetForwardVector().y * 2), 0):Normalized() * 150)
+    end
+
+    if name == "falling_cabinet_door" then
+        Entities:FindByName(nil, "falling_cabinet_door"):ApplyLocalAngularVelocityImpulse(Vector(0, 1200, 0))
+    end
+
+    if name == "combine_gun_mechanical" then
+        SendToConsole("bind " .. INTERACT .. " novr_leavecombinegun")
+        if thisEntity:Attribute_GetIntValue("used", 0) == 0 then
+            local ent = SpawnEntityFromTableSynchronous("game_text", {["effect"]=2, ["spawnflags"]=1, ["color"]="230 230 230", ["color2"]="0 0 0", ["fadein"]=0, ["fadeout"]=0.15, ["fxtime"]=0.25, ["holdtime"]=5, ["x"]=-1, ["y"]=0.6})
+            DoEntFireByInstanceHandle(ent, "SetText", "Press " .. INTERACT .. " to leave", 0, nil, nil)
+            DoEntFireByInstanceHandle(ent, "Display", "", 0, nil, nil)
+
+            ent = Entities:FindByName(nil, "combine_gun_interact") -- parent gun entity
+            ent:Attribute_SetIntValue("ready", 1)
+            ent:SaveQAngle("OrigAngle", ent:GetAngles())
+        end
+        EquipCombineGunMechanical(player)
+        thisEntity:Attribute_SetIntValue("used", 1)
+    end
 end
 
-if name == "combine_gun_mechanical" then
-    SendToConsole("bind J novr_leavecombinegun")
-    if thisEntity:Attribute_GetIntValue("used", 0) == 0 then
-        local ent = SpawnEntityFromTableSynchronous("game_text", {["effect"]=2, ["spawnflags"]=1, ["color"]="230 230 230", ["color2"]="0 0 0", ["fadein"]=0, ["fadeout"]=0.15, ["fxtime"]=0.25, ["holdtime"]=5, ["x"]=-1, ["y"]=0.6})
-        DoEntFireByInstanceHandle(ent, "SetText", "Press [J] to get out", 0, nil, nil)
-        DoEntFireByInstanceHandle(ent, "Display", "", 0, nil, nil)
 
-        ent = Entities:FindByName(nil, "combine_gun_interact") -- parent gun entity
-        ent:Attribute_SetIntValue("ready", 1)
-        ent:SaveQAngle("OrigAngle", ent:GetAngles())
+---------- a5_ending ----------
+
+if map == "a5_ending" then
+    if name == "l_candler" then
+        SendToConsole("ent_fire player_speedmod ModifySpeed 0")
+        SendToConsole("ent_fire left_hand_posed_and_energized_relay trigger")
+    elseif name == "r_candler" then
+        SendToConsole("ent_fire player_speedmod ModifySpeed 0")
+        SendToConsole("ent_fire right_hand_posed_and_energized_relay trigger")
     end
-    EquipCombineGunMechanical(player)
-    thisEntity:Attribute_SetIntValue("used", 1)
 end
 
 
@@ -923,14 +1347,6 @@ end
 if name == "18918_5316_button_pusher_prop" then
     SendToConsole("ent_fire_output 18918_5316_button_center_pusher OnIn")
     SendToConsole("phys_pushscale 0")
-end
-
-if name == "bridge_crank" then
-    SendToConsole("ent_fire driven_bridge SetPlaybackRate 1 1")
-    SendToConsole("ent_fire drawbridge_brush Enable")
-    local ent = Entities:FindByName(nil, "bridge_crank")
-    ent:FireOutput("OnInteractStart", nil, nil, nil, 0)
-    ent:FireOutput("OnInteractStop", nil, nil, nil, 2.8)
 end
 
 if name == "3_8223_mesh_combine_switch_box" then
@@ -1012,7 +1428,7 @@ if class == "prop_dynamic" or "func_physical_button" then
                     SendToConsole("ent_fire_output health_station OnHealingPlayerStop")
                     player:StopThink("HealthChargeSoundLoop")
                     StopSoundEvent("HealthStation.Loop", player)
-                    SendToConsole("ent_fire player_speedmod ModifySpeed 1")
+                    SendToConsole("ent_fire player_speedmod ModifySpeed 2")
                 end
             end, "Interacting", 0)
 
@@ -1020,22 +1436,7 @@ if class == "prop_dynamic" or "func_physical_button" then
                 StartSoundEvent("HealthStation.Loop", player)
             end, "HealthChargeSoundLoop", 0.7)
         end
-    elseif model == "models/props/alyx_hideout/button_plate.vmdl" or vlua.find(name, "2_8127_elev_button_floor_") then
-        SendToConsole("snd_sos_start_soundevent Button_Basic.Press")
-
-        SendToConsole("ent_fire 2_8127_elev_button_test_floor_" .. player:Attribute_GetIntValue("next_elevator_floor", 2) .. " Trigger")
-
-        if player:Attribute_GetIntValue("next_elevator_floor", 2) == 2 then
-            player:Attribute_SetIntValue("next_elevator_floor", 1)
-        else
-            player:Attribute_SetIntValue("next_elevator_floor", 2)
-        end
     end
-end
-
-if name == "2860_window_sliding1" then
-    SendToConsole("fadein 0.2")
-    SendToConsole("setpos_exact 1437 -1422 140")
 end
 
 if name == "2_11128_cshield_station_1" then
@@ -1051,13 +1452,12 @@ end
 
 -- Combine Elevator
 
-if name == "2_203_elev_button_floor_1" or name == "2_203_elevator_switch_box" then
+if name == "2_203_elev_button_floor_1" then
     SendToConsole("ent_fire_output 2_203_elev_button_floor_1_handpose OnHandPosed")
 end
 
 if name == "2_203_inside_elevator_button" then
     SendToConsole("ent_fire_output 2_203_elev_button_elevator_handpose OnHandPosed")
-    Entities:FindByName(nil, "2_203_elev_anim_door"):Attribute_SetIntValue("player_in_combine_elevator", 0)
 end
 
 if name == "inside_elevator_button" then
@@ -1072,11 +1472,6 @@ if name == "@pod_shell" or name == "pod_insides" then
         ent:Attribute_SetIntValue("used", 1)
         SendToConsole("ent_fire @pod_shell Unlock")
     end
-end
-
-if name == "traincar_01_hatch" and thisEntity:Attribute_GetIntValue("used", 0) == 0 then
-    thisEntity:Attribute_SetIntValue("used", 1)
-    SendToConsole("ent_fire_output traincar_01_hackplug OnHackSuccess")
 end
 
 -- Combine fabricator
@@ -1281,19 +1676,17 @@ if class == "item_hlvr_combine_console_tank" then
 end
 
 if name == "room1_lights_circuitbreaker_switch" then
-    SendToConsole("ent_fire_output controlroom_circuitbreaker_relay ontrigger")
-end
-
-if name == "plug_console_starter_lever" then
-    if map == "a4_c17_tanker_yard" then
-        if thisEntity:Attribute_GetIntValue("used", 0) == 1 then
-            return
+    local ent = Entities:FindByName(nil, "room1_lights_circuitbreaker_switch")
+    if ent:Attribute_GetIntValue("gen_on", 1) == 1 then
+        DoEntFireByInstanceHandle(ent, "SetCompletionValue", "1", 0, nil, nil)
+        DoEntFireByInstanceHandle(ent, "EnableReturnToCompletion", "", 0, nil, nil)
+        ent:Attribute_SetIntValue("gen_on", 0)
+        if FLASHLIGHT == "" then
+            if Entities:GetLocalPlayer():Attribute_GetIntValue("flashlight_on", 0) == 0 then
+                SendToConsole("inv_flashlight")
+            end
         end
-
-        thisEntity:Attribute_SetIntValue("used", 1)
     end
-
-    SendToConsole("ent_fire_output plug_console_starter_lever OnCompletionB_Forward")
 end
 
 if model == "models/props_combine/combine_consoles/combine_lever_switch.vmdl" then
@@ -1303,21 +1696,84 @@ if model == "models/props_combine/combine_consoles/combine_lever_switch.vmdl" th
 end
 
 if name == "lift_button_box" then
-    if thisEntity:Attribute_GetIntValue("used", 0) == 1 then
-        SendToConsole("ent_fire_output lift_button_down onin")
-        thisEntity:Attribute_SetIntValue("used", 0)
-    else
-        SendToConsole("ent_fire_output lift_button_up onin")
-        thisEntity:Attribute_SetIntValue("used", 1)
+    if _G.platform_help_shown == nil then
+        local ent = SpawnEntityFromTableSynchronous("game_text", {["effect"]=2, ["spawnflags"]=1, ["color"]="230 230 230", ["color2"]="0 0 0", ["fadein"]=0, ["fadeout"]=0.15, ["fxtime"]=0.25, ["holdtime"]=5, ["x"]=-1, ["y"]=0.6})
+        if map == "a3_c17_processing_plant" then
+            DoEntFireByInstanceHandle(ent, "SetText", "Hold [" .. INTERACT .. "] and press [" .. PRIMARY_ATTACK .. "] to raise the platform\nor [" .. SECONDARY_ATTACK .. "] to lower the platform", 0, nil, nil)
+        elseif map == "a4_c17_water_tower" then
+            DoEntFireByInstanceHandle(ent, "SetText", "Hold [" .. INTERACT .. "] and press [" .. PRIMARY_ATTACK .. "] to move the crane right\nor [" .. SECONDARY_ATTACK .. "] to move the crane left", 0, nil, nil)
+        end
+        DoEntFireByInstanceHandle(ent, "Display", "", 0, nil, nil)
+        _G.platform_help_shown = "1"
     end
+
+    SendToConsole("bind " .. PRIMARY_ATTACK .. " +raise_platform")
+    SendToConsole("bind " .. SECONDARY_ATTACK .. " +lower_platform")
+    player:SetThink(function()
+        if player:Attribute_GetIntValue("use_released", 0) == 1 then
+            SendToConsole("bind " .. PRIMARY_ATTACK .. " \"+customattack;viewmodel_update\"")
+            SendToConsole("bind " .. SECONDARY_ATTACK .. " +customattack2")
+            local motion_enabled = 1
+            player:SetThink(function()
+                if motion_enabled == 1 then
+                    SendToConsole("ent_fire lift_button_box disablemotion")
+                    motion_enabled = 0
+                    return 0.01
+                else
+                    SendToConsole("ent_fire lift_button_box enablemotion")
+                    motion_enabled = 1
+                end
+            end, "Thinking", 0)
+        else
+            return 0
+        end
+    end, "Interacting", 0)
 end
 
-if name == "pallet_lever_vertical" then
-    SendToConsole("ent_fire_output pallet_logic_phys_raise ontrigger")
-end
-
-if name == "pallet_lever" then
-    SendToConsole("ent_fire_output pallet_logic_extend ontrigger")
+if name == "pallet_lever_vertical" then -- BUG HERE! if the platform is fully raised or lowered, it needs to be moved laterally before it can raise/lower again
+    if player:Attribute_GetIntValue("proc_plant_pallet_lever_vertical_forward", 0) == 0 then
+        player:SetThink(function()
+            if player:Attribute_GetIntValue("use_released", 0) == 1 then
+                SendToConsole("ent_fire pallet_lever_vertical setreturntocompletionamount 0.5; ent_fire pallet_lever_vertical enablereturntocompletion")
+            else
+                SendToConsole("ent_fire pallet_lever_vertical setreturntocompletionamount 0; ent_fire pallet_lever_vertical enablereturntocompletion")
+                player:Attribute_SetIntValue("proc_plant_pallet_lever_vertical_forward", 1)
+                return 0
+            end
+        end, "Interacting", 0)
+    else
+        player:SetThink(function()
+            if player:Attribute_GetIntValue("use_released", 0) == 1 then
+                SendToConsole("ent_fire pallet_lever_vertical setreturntocompletionamount 0.5; ent_fire pallet_lever_vertical enablereturntocompletion")
+            else
+                SendToConsole("ent_fire pallet_lever_vertical setreturntocompletionamount 1; ent_fire pallet_lever_vertical enablereturntocompletion")
+                player:Attribute_SetIntValue("proc_plant_pallet_lever_vertical_forward", 0)
+                return 0
+            end
+        end, "Interacting", 0)
+    end
+elseif name == "pallet_lever" then
+    if player:Attribute_GetIntValue("proc_plant_pallet_lever_forward", 0) == 0 then
+        player:SetThink(function()
+            if player:Attribute_GetIntValue("use_released", 0) == 1 then
+                SendToConsole("ent_fire pallet_lever setreturntocompletionamount 0.5; ent_fire pallet_lever enablereturntocompletion")
+            else
+                SendToConsole("ent_fire pallet_lever setreturntocompletionamount 0; ent_fire pallet_lever enablereturntocompletion")
+                player:Attribute_SetIntValue("proc_plant_pallet_lever_forward", 1)
+                return 0
+            end
+        end, "Interacting", 0)
+    else
+        player:SetThink(function()
+            if player:Attribute_GetIntValue("use_released", 0) == 1 then
+                SendToConsole("ent_fire pallet_lever setreturntocompletionamount 0.5; ent_fire pallet_lever enablereturntocompletion")
+            else
+                SendToConsole("ent_fire pallet_lever setreturntocompletionamount 1; ent_fire pallet_lever enablereturntocompletion")
+                player:Attribute_SetIntValue("proc_plant_pallet_lever_forward", 0)
+                return 0
+            end
+        end, "Interacting", 0)
+    end
 end
 
 if class == "item_hlvr_headcrab_gland" then
