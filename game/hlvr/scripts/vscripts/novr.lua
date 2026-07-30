@@ -1382,7 +1382,7 @@ if GlobalSys:CommandLineCheck("-novr") then
             -- Fix lod and shadow popups
             if GlobalSys:CommandLineCheck("-nocull") then
                 SendToConsole("sv_cheats 1")
-                SendToConsole("sc_force_lod_level_0")
+                SendToConsole("sc_force_lod_level 0")
                 SendToConsole("vr_expand_cull_frustum 360")
                 SendToConsole("sc_no_cull 1")
                 SendToConsole("vr_shadow_map_culling 0")
