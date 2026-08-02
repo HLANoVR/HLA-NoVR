@@ -898,7 +898,7 @@ if map == "a2_headcrabs_tunnel" then
         SendToConsole("ent_remove flashlight")
         SendToConsole("ent_remove fake_flashlight_for_room")
 
-        if not FLASHLIGHT == "" then
+        if not AUTO_FLASHLIGHT then
             local ent = SpawnEntityFromTableSynchronous("env_message", {["message"]="FLASHLIGHT"})
             DoEntFireByInstanceHandle(ent, "ShowMessage", "", 0, nil, nil)
             SendToConsole("snd_sos_start_soundevent Instructor.StartLesson")
@@ -1681,7 +1681,7 @@ if name == "room1_lights_circuitbreaker_switch" then
         DoEntFireByInstanceHandle(ent, "SetCompletionValue", "1", 0, nil, nil)
         DoEntFireByInstanceHandle(ent, "EnableReturnToCompletion", "", 0, nil, nil)
         ent:Attribute_SetIntValue("gen_on", 0)
-        if FLASHLIGHT == "" then
+        if AUTO_FLASHLIGHT then
             if Entities:GetLocalPlayer():Attribute_GetIntValue("flashlight_on", 0) == 0 then
                 SendToConsole("inv_flashlight")
             end

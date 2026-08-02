@@ -277,19 +277,6 @@ if GlobalSys:CommandLineCheck("-novr") then
         Entities:GetLocalPlayer():Attribute_SetIntValue("sprinting", 0)
     end, "", 0)
 
-    Convars:RegisterCommand("notarget_jeff", function()
-		local player = Entities:GetLocalPlayer()
-		if player:Attribute_GetIntValue("notarget", 0) == 0 then
-			player:Attribute_SetIntValue("notarget", 1)
-			SendToConsole("ent_fire @blind_zombie setdeafstate 0;ent_fire @blind_zombie ignoreplayer 1;ent_fire @blind_zombie setsuppressmovement 0;hl_blind_zombie_attack_chance 0;hl_blind_zombie_cough_kill 0;hl_blind_zombie_sniff_time 0")
-			print("notarget Jeff ON")
-		else
-			player:Attribute_SetIntValue("notarget", 0)
-			SendToConsole("ent_fire @blind_zombie setdeafstate 0;ent_fire @blind_zombie ignoreplayer 0;ent_fire @blind_zombie setsuppressmovement 0;hl_blind_zombie_attack_chance 1;hl_blind_zombie_cough_kill 1;hl_blind_zombie_sniff_time 1")
-			print("notarget Jeff OFF")
-		end
-    end, "", 0)
-
     Convars:RegisterCommand("usemultitool", function()
         local viewmodel = Entities:FindByClassname(nil, "viewmodel")
         local player = Entities:GetLocalPlayer()
@@ -1220,11 +1207,11 @@ if GlobalSys:CommandLineCheck("-novr") then
 		SendToConsole('ent_remove position_script')
 		SendToConsole('ent_create logic_script {"targetname" "position_script" "origin" "0 0 0" "vscripts" "player_pos.lua"')
 		
-		if FLASHLIGHT == "" then
-		    print("AUTO FLASHLIGHT ENABLED")
+		if AUTO_FLASHLIGHT then
+		    print("[AutoFlashlight] Enabled")
 			playerEnt:Attribute_SetIntValue("auto_flashlight", 1)
 		else
-		    print("AUTO FLASHLIGHT DISABLED")
+		    print("[AutoFlashlight] Disabled")
 			playerEnt:Attribute_SetIntValue("auto_flashlight", 0)
 		end
 
@@ -1242,7 +1229,6 @@ if GlobalSys:CommandLineCheck("-novr") then
             SendToConsole("bind " .. PRIMARY_ATTACK .. " +use")
             SendToConsole("bind " .. CROUCH .. " \"\"")
             SendToConsole("bind PAUSE main_menu_exec")
-			SendToConsole("fov_desired 80")
             if not loading_save_file then
                 SendToConsole("ent_fire player_speedmod ModifySpeed 0")
                 SendToConsole("setpos 0 -6154 6.473839")
@@ -1304,7 +1290,6 @@ if GlobalSys:CommandLineCheck("-novr") then
             SendToConsole("bind " .. INTERACT .. " +useextra")
             SendToConsole("bind " .. JUMP .. " jumpfixed")
             SendToConsole("bind " .. NOCLIP .. " toggle_noclip")
-            SendToConsole("bind " .. NOTARGET .. " \"notarget;notarget_jeff\"")
             SendToConsole("bind " .. QUICK_SAVE .. " \"save quick;snd_sos_start_soundevent Instructor.StartLesson;ent_fire text_quicksave showmessage\"")
             SendToConsole("bind " .. QUICK_LOAD .. " \"vr_enable_fake_vr 0;vr_enable_fake_vr 0;load quick\"")
             SendToConsole("bind " .. MAIN_MENU .. " \"addon_play startup\"")
@@ -1375,17 +1360,17 @@ if GlobalSys:CommandLineCheck("-novr") then
             SendToConsole("sk_plr_dmg_smg1 5")
             SendToConsole("hlvr_physcannon_forward_offset -5")
             SendToConsole("physcannon_tracelength 0")
-            SendToConsole("fov_desired " .. FOV)
             -- TODO: Lower this when picking up very low mass objects
             SendToConsole("player_throwforce 500")
             
             -- Fix lod and shadow popups
-            if GlobalSys:CommandLineCheck("-nocull") then
+            if NO_CULL then
                 SendToConsole("sv_cheats 1")
                 SendToConsole("sc_force_lod_level 0")
                 SendToConsole("vr_expand_cull_frustum 360")
                 SendToConsole("sc_no_cull 1")
                 SendToConsole("vr_shadow_map_culling 0")
+                print("[NoCull] Enabled")
             end
             
             ent = Entities:FindByClassname(nil, "prop_door_rotating_physics")
@@ -1870,7 +1855,7 @@ if GlobalSys:CommandLineCheck("-novr") then
                         ent = Entities:FindByName(nil, "15493_hint_mantle_delay")
                         ent:RedirectOutput("OnTrigger", "ShowCrouchJumpTutorial", ent)
 
-                        if FLASHLIGHT ~= "" then -- MANUAL FLASHLIGHT ONLY
+                        if not AUTO_FLASHLIGHT then -- MANUAL FLASHLIGHT ONLY
                             ent = Entities:FindByClassnameNearest("trigger_once", Vector(-746, -943, -92), 10)
                             ent:Kill()
                         end
@@ -1881,7 +1866,9 @@ if GlobalSys:CommandLineCheck("-novr") then
 
                     ent = Entities:GetLocalPlayer()
                     if ent:Attribute_GetIntValue("has_flashlight", 0) == 1 then
-                        SendToConsole("bind " .. FLASHLIGHT .. " inv_flashlight")
+                        if not AUTO_FLASHLIGHT then
+                            SendToConsole("bind " .. FLASHLIGHT .. " inv_flashlight")
+                        end
                     end
                 elseif GetMapName() == "a2_hideout" then
                     if not loading_save_file then
@@ -1914,7 +1901,9 @@ if GlobalSys:CommandLineCheck("-novr") then
                         end
                     end
                 else
-                    SendToConsole("bind " .. FLASHLIGHT .. " inv_flashlight")
+                    if not AUTO_FLASHLIGHT then
+                        SendToConsole("bind " .. FLASHLIGHT .. " inv_flashlight")
+                    end
 
                     if GetMapName() == "a2_drainage" then
                         if not loading_save_file then
@@ -2356,7 +2345,6 @@ if GlobalSys:CommandLineCheck("-novr") then
         --SendToConsole("bind ".. MAIN_MENU        .." ".. keyBind)
         --SendToConsole("bind ".. PAUSE            .." ".. keyBind)
         SendToConsole("bind ".. NOCLIP           .." ".. keyBind)
-        SendToConsole("bind ".. NOTARGET         .." ".. keyBind)
         SendToConsole("bind ".. VIEWM_INSPECT    .." ".. keyBind)
         SendToConsole("bind ".. ZOOM             .." ".. keyBind)
         SendToConsole("bind ".. USE_HEALTHPEN    .." ".. keyBind)
@@ -2764,7 +2752,9 @@ if GlobalSys:CommandLineCheck("-novr") then
         SendToConsole("bind " .. PRIMARY_ATTACK .. " \"+customattack;viewmodel_update\"")
         SendToConsole("bind " .. SECONDARY_ATTACK .. " +customattack2")
         SendToConsole("bind " .. TERTIARY_ATTACK .. " +customattack3")
-        SendToConsole("bind " .. FLASHLIGHT .. " inv_flashlight")
+        if not AUTO_FLASHLIGHT then
+            SendToConsole("bind " .. FLASHLIGHT .. " inv_flashlight")
+        end
         SendToConsole("impulse 200")
         SendToConsole("hidehud 64")
         Entities:GetLocalPlayer():Attribute_SetIntValue("eavesdropping", 0)
