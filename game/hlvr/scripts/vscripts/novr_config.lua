@@ -1,5 +1,5 @@
 STEAM_DECK=true
-DEFAULT_MENU=false
+DEFAULT_MENU=true
 if GlobalSys:CommandLineCheck("-steamdeck") then
     STEAM_DECK=true
     DEFAULT_MENU=true
