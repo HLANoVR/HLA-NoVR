@@ -72,16 +72,16 @@ function MainThinkFunc()
 			SendToConsole("setpos_player 1 791.77 -1425.97 576.66")
 			SendToConsole("ent_fire zombieparty_window_slideconstraint setoffset 0")
 		end
-	elseif GetMapName() == "a3_distillery" then
-		if ( xpos > 611 and xpos < 667 ) and ( ypos > -934 and ypos < -895 ) then
-			if _G.hold_mouth_shown == nil then
-				local ent = SpawnEntityFromTableSynchronous("game_text", {["effect"]=2, ["spawnflags"]=1, ["color"]="230 230 230", ["color2"]="0 0 0", ["fadein"]=0, ["fadeout"]=0.15, ["fxtime"]=0.25, ["holdtime"]=5, ["x"]=-1, ["y"]=0.6})
-				DoEntFireByInstanceHandle(ent, "SetText", "Hold [" .. COVER_MOUTH .. "] to Cover Mouth", 0, nil, nil)
-				DoEntFireByInstanceHandle(ent, "Display", "", 0, nil, nil)
-                SendToConsole("snd_sos_start_soundevent Instructor.StartLesson")
-				_G.hold_mouth_shown = "1"
-			end
-		end
+	-- elseif GetMapName() == "a3_distillery" then
+	-- 	if ( xpos > 611 and xpos < 667 ) and ( ypos > -934 and ypos < -895 ) then
+	-- 		if _G.hold_mouth_shown == nil then
+	-- 			local ent = SpawnEntityFromTableSynchronous("game_text", {["effect"]=2, ["spawnflags"]=1, ["color"]="230 230 230", ["color2"]="0 0 0", ["fadein"]=0, ["fadeout"]=0.15, ["fxtime"]=0.25, ["holdtime"]=5, ["x"]=-1, ["y"]=0.6})
+	-- 			DoEntFireByInstanceHandle(ent, "SetText", "Hold [" .. COVER_MOUTH .. "] to Cover Mouth", 0, nil, nil)
+	-- 			DoEntFireByInstanceHandle(ent, "Display", "", 0, nil, nil)
+    --             SendToConsole("snd_sos_start_soundevent Instructor.StartLesson")
+	-- 			_G.hold_mouth_shown = "1"
+	-- 		end
+	-- 	end
 	elseif GetMapName() == "a4_c17_zoo" then
 		if ( xpos > 5377 and xpos < 5414 ) and ( ypos > -1870 and ypos < -1868 ) and ( zpos > -90 and zpos < -80 ) then
 			SendToConsole("setpos_player 1 5395.52 -1920.89 -115")

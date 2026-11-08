@@ -632,7 +632,7 @@ end
 
 ---------- a1_intro_world ----------
 
-if name == "call_button_prop_2" then
+if name == "microphone" or name == "call_button_prop" or name == "call_button_prop_2" then
     SendToConsole("ent_fire_output call_button onin")
 end
 

@@ -2084,6 +2084,10 @@ if GlobalSys:CommandLineCheck("-novr") then
                             ent = Entities:FindByName(nil, "11478_6250_locked_door_relay_break_lock")
                             ent:RedirectOutput("OnTrigger", "FixJeffBatteryPuzzle", ent)
 
+                            SendToConsole("ent_create env_message { targetname text_covermouth message COVERMOUTH }")
+                            ent = Entities:FindByName(nil, "11632_223_cough_volume")
+                            ent:RedirectOutput("OnStartTouch", "ShowCoverMouthTutorial", ent)
+
                             SendToConsole("ent_fire timer_gun_equipped Kill")
                             SendToConsole("ent_fire timer_gun_equipped_b Kill")
                             ent = Entities:FindByName(nil, "vcd_larry_talk_01")
